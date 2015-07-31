@@ -1,59 +1,112 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+cmake_minimum_required(VERSION 2.8.3)
+project(flirtlib_ros)
 
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+find_package(catkin REQUIRED COMPONENTS
+   message_generation
+   roscpp
+   std_srvs
+   sensor_msgs
+   move_base_msgs
+   actionlib_msgs
+   actionlib
+   tf
+   occupancy_grid_utils
+   interactive_markers
+   warehouse_ros
+   flirtlib)
 
-rosbuild_find_ros_package(actionlib_msgs)
-include(${actionlib_msgs_PACKAGE_PATH}/cmake/actionbuild.cmake)
-genaction()
-rosbuild_init()
+find_package(Boost REQUIRED COMPONENTS program_options)
+find_package(tinyxml REQUIRED)
 
-#set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+include_directories(
+    include
+    ${catkin_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
+    ${tinyxml_INCLUDE_DIRS})
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(flirtlib REQUIRED flirtlib)
-include_directories(${flirtlib_include_dirs})
+add_message_files(
+  DIRECTORY msg
+  FILES
+    DescriptorRos.msg
+    InterestPointRos.msg
+    ScanMap.msg
+    ExecutiveState.msg
+    RefScanRos.msg
+    Vector.msg)
 
-rosbuild_genmsg()
+add_action_files(
+  DIRECTORY action
+  FILES
+    RotateInPlace.action)
 
-rosbuild_add_library(flirtlib_ros
-                     src/conversions.cpp
-                     src/common.cpp
-                     src/flirtlib.cpp
-                     src/localization_monitor.cpp)
-target_link_libraries(flirtlib_ros tinyxml)                   
-target_link_libraries(flirtlib_ros grid_utils)
-target_link_libraries(flirtlib_ros ${flirtlib_LIBRARIES})
+generate_messages(DEPENDENCIES actionlib_msgs)
 
-rosbuild_add_executable(flirtlib_ros_test src/flirtlib_ros_test.cpp)
-target_link_libraries(flirtlib_ros_test flirtlib_ros)
-target_link_libraries(flirtlib_ros_test ${flirtlib_LIBRARIES})
+catkin_package(
+  INCLUDE_DIRS include
+  CATKIN_DEPENDS
+    roscpp
+    message_runtime
+    std_srvs
+    sensor_msgs
+    move_base_msgs
+    actionlib_msgs
+    actionlib
+    tf
+    occupancy_grid_utils
+    interactive_markers
+    warehouse_ros
+    flirtlib)
 
-rosbuild_add_executable(markers src/interactive_markers.cpp)
-target_link_libraries(markers tinyxml)
+add_library(${PROJECT_NAME}
+    src/conversions.cpp
+    src/common.cpp
+    src/flirtlib.cpp
+    src/localization_monitor.cpp)
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${tinyxml_LIBRARIES} grid_utils)
 
-rosbuild_add_executable(simulate_scans src/simulate_scans.cpp)
-target_link_libraries(simulate_scans grid_utils)
-target_link_libraries(simulate_scans tinyxml)
+add_executable(flirtlib_ros_test src/flirtlib_ros_test.cpp)
+target_link_libraries(flirtlib_ros_test ${PROJECT_NAME})
 
-rosbuild_add_executable(place_rec_test src/place_rec_test.cpp)
-target_link_libraries(place_rec_test flirtlib_ros)
+add_executable(markers src/interactive_markers.cpp)
+target_link_libraries(markers ${tinyxml_LIBRARIES})
 
-rosbuild_add_executable(generate_scan_map src/generate_scan_map.cpp)
-target_link_libraries(generate_scan_map flirtlib_ros)
+add_executable(simulate_scans src/simulate_scans.cpp)
+target_link_libraries(simulate_scans ${tinyxml_LIBRARIES} grid_utils)
 
-rosbuild_add_executable(startup_loc src/startup_loc.cpp)
-target_link_libraries(startup_loc flirtlib_ros)
+add_executable(place_rec_test src/place_rec_test.cpp)
+target_link_libraries(place_rec_test ${PROJECT_NAME})
 
-rosbuild_add_executable(localization_monitor src/localization_monitor_node.cpp)
-target_link_libraries(localization_monitor flirtlib_ros)
+add_executable(generate_scan_map src/generate_scan_map.cpp)
+target_link_libraries(generate_scan_map ${PROJECT_NAME})
 
-rosbuild_add_executable(generate_simulated_scans src/generate_simulated_scans.cpp)
-target_link_libraries(generate_simulated_scans flirtlib_ros)
-rosbuild_link_boost(generate_simulated_scans program_options)
+add_executable(startup_loc src/startup_loc.cpp)
+target_link_libraries(startup_loc ${PROJECT_NAME})
 
-#rosbuild_add_executable(rotate_in_place src/rotate_in_place.cpp)
-#target_link_libraries(rotate_in_place tinyxml)
+add_executable(localization_monitor src/localization_monitor_node.cpp)
+target_link_libraries(localization_monitor ${PROJECT_NAME})
+
+add_executable(generate_simulated_scans src/generate_simulated_scans.cpp)
+target_link_libraries(generate_simulated_scans ${PROJECT_NAME} ${Boost_LIBRARIES})
+
+#add_executable(rotate_in_place src/rotate_in_place.cpp)
+#target_link_libraries(rotate_in_place ${tinyxml_LIBRARIES})
+
+install(
+  TARGETS
+    ${PROJECT_NAME}
+    flirtlib_ros_test
+    markers
+    simulate_scans
+    place_rec_test
+    generate_scan_map
+    startup_loc
+    localization_monitor
+    generate_simulated_scans
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+foreach(dir config launch)
+  install(DIRECTORY ${dir}/
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
+foreach()
