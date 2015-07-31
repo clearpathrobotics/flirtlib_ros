@@ -19,7 +19,6 @@ Provides:
 -->
 
 <launch>
-  
   <arg name="run_db" default="false"/>
   <arg name="db_path" default=""/>
 
@@ -29,11 +28,10 @@ Provides:
     <param name="scan_db" value="scan_map"/>
     <param name="min_num_matches" value="15"/>
   </node>
-  
+
   <node pkg="mongodb" type="wrapper.py" name="startup_loc_db"
         if="$(arg run_db)">
     <param name="database_path" value="$(arg db_path)"/>
     <param name="overwrite" value="false"/>
   </node>
-
 </launch>

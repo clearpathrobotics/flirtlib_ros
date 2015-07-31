@@ -18,7 +18,6 @@ Provides:
 -->
 
 <launch>
-  
   <arg name="run_db" default="false"/>
   <arg name="db_path" default="/removable/flirtlib_db"/>
   <arg name="remote_db_host" default="mongo.willowgarage.com"/>
@@ -33,8 +32,7 @@ Provides:
     <param name="db_name" value="flirtlib_place_rec"/>
     <param name="db_host" value="$(arg db_host)"/>
   </node>
-  
+
   <node pkg="mongodb" type="wrapper.py" name="flirtlib_db" if="$(arg run_db)"
         output="screen"/>
-
 </launch>

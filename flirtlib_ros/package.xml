@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<package>
+  <name>flirtlib_ros</name>
+  <version>0.0.0</version>
+  <description>
+    ROS wrapper for the FLIRTlib 3rd party library.
+  </description>
+
+  <maintainer email="enrique.fernandez.perdomo@gmail.com">Enrique Fernandez</maintainer>
+  <maintainer email="bhaskara@willowgarage.com">Bhaskara Marthi</maintainer>
+  <author email="bhaskara@willowgarage.com">Bhaskara Marthi</author>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>message_generation</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_srvs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>move_base_msgs</build_depend>
+  <build_depend>actionlib_msgs</build_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>occupancy_grid_utils</build_depend>
+  <build_depend>interactive_markers</build_depend>
+  <build_depend>warehouse_ros</build_depend>
+  <build_depend>flirtlib</build_depend>
+
+  <build_depend>boost</build_depend>
+  <build_depend>tinyxml</build_depend>
+
+  <run_depend>message_runtime</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>std_srvs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>move_base_msgs</run_depend>
+  <run_depend>actionlib_msgs</run_depend>
+  <run_depend>actionlib</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>occupancy_grid_utils</run_depend>
+  <run_depend>interactive_markers</run_depend>
+  <run_depend>warehouse_ros</run_depend>
+  <run_depend>flirtlib</run_depend>
+
+  <run_depend>boost</run_depend>
+  <run_depend>tinyxml</run_depend>
+</package>
