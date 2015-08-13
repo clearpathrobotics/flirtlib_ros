@@ -6,6 +6,8 @@ find_package(catkin REQUIRED COMPONENTS
    roscpp
    std_srvs
    sensor_msgs
+   geometry_msgs
+   std_msgs
    move_base_msgs
    actionlib_msgs
    actionlib
@@ -13,16 +15,20 @@ find_package(catkin REQUIRED COMPONENTS
    occupancy_grid_utils
    interactive_markers
    warehouse_ros
-   flirtlib)
+   cmake_modules
+   )
 
 find_package(Boost REQUIRED COMPONENTS program_options)
-find_package(tinyxml REQUIRED)
+find_package(TinyXML REQUIRED)
 
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
-    ${tinyxml_INCLUDE_DIRS})
+    ${TinyXML_INCLUDE_DIRS}
+    /usr/local/include/flirtlib)
+
+link_directories(/usr/local/lib/flirtlib)
 
 add_message_files(
   DIRECTORY msg
@@ -39,7 +45,7 @@ add_action_files(
   FILES
     RotateInPlace.action)
 
-generate_messages(DEPENDENCIES actionlib_msgs)
+generate_messages(DEPENDENCIES actionlib_msgs geometry_msgs std_msgs sensor_msgs)
 
 catkin_package(
   INCLUDE_DIRS include
@@ -55,23 +61,27 @@ catkin_package(
     occupancy_grid_utils
     interactive_markers
     warehouse_ros
-    flirtlib)
+  DEPENDS
+    TinyXML
+    )
 
 add_library(${PROJECT_NAME}
     src/conversions.cpp
     src/common.cpp
     src/flirtlib.cpp
     src/localization_monitor.cpp)
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${tinyxml_LIBRARIES} grid_utils)
+  target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES} 
+   feature geometry sensors sensorstream utils )
+ add_dependencies( ${PROJECT_NAME} ${PROJECT_NAME}_gencpp)
 
 add_executable(flirtlib_ros_test src/flirtlib_ros_test.cpp)
-target_link_libraries(flirtlib_ros_test ${PROJECT_NAME})
+target_link_libraries(flirtlib_ros_test ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 add_executable(markers src/interactive_markers.cpp)
-target_link_libraries(markers ${tinyxml_LIBRARIES})
+target_link_libraries(markers ${TinyXML_LIBRARIES} ${catkin_LIBRARIES})
 
 add_executable(simulate_scans src/simulate_scans.cpp)
-target_link_libraries(simulate_scans ${tinyxml_LIBRARIES} grid_utils)
+target_link_libraries(simulate_scans ${TinyXML_LIBRARIES} ${catkin_LIBRARIES})
 
 add_executable(place_rec_test src/place_rec_test.cpp)
 target_link_libraries(place_rec_test ${PROJECT_NAME})
@@ -105,8 +115,3 @@ install(
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-foreach(dir config launch)
-  install(DIRECTORY ${dir}/
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
-foreach()

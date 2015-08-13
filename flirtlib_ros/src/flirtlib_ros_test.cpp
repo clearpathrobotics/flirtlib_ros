@@ -90,8 +90,8 @@ double averageDistance (const Correspondences& corresp,
 
   BOOST_FOREACH (const Correspondence& c, corresp) 
   {
-    const btVector3 pt0(c.first->getPosition().x, c.first->getPosition().y, 0.0);
-    const btVector3 pt1(c.second->getPosition().x, c.second->getPosition().y, 0.0);
+    const tf::Vector3 pt0(c.first->getPosition().x, c.first->getPosition().y, 0.0);
+    const tf::Vector3 pt1(c.second->getPosition().x, c.second->getPosition().y, 0.0);
     sum += (pose0*pt0).distance(pose1*pt1);
   }
   return sum/n;

@@ -143,7 +143,7 @@ int main (int argc, char** argv)
   scan_info.range_max = 60.0;
   
   // Set up db connection and remove any existing scans
-  mr::dropDatabase(db_name, "localhost", 27017);
+  mr::dropDatabase(db_name, "localhost", 27017, 100);
   mr::MessageCollection<fr::RefScanRos> scans(db_name, "scans", "localhost");
 
   // Set up feature extractor
