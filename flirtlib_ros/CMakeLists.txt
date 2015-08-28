@@ -70,7 +70,7 @@ add_library(${PROJECT_NAME}
     src/common.cpp
     src/flirtlib.cpp
     src/localization_monitor.cpp)
-  target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES} 
+  target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES}
    feature geometry sensors sensorstream utils )
  add_dependencies( ${PROJECT_NAME} ${PROJECT_NAME}_gencpp)
 
