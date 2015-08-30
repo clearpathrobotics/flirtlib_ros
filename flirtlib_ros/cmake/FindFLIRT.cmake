@@ -51,7 +51,10 @@ find_library(FLIRT_SENSORSTREAM NAMES sensorstream
     /usr/local/lib/flirtlib
     /opt/local/lib/flirtlib)
 
+# NO_DEFAULT_PATH is needed to avoid taking
+# the libutils.so from /opt/ros/$(rosversion -d)/lib
 find_library(FLIRT_UTILS NAMES utils
+  NO_DEFAULT_PATH
   PATHS
     /usr/lib/flirtlib
     /usr/local/lib/flirtlib
