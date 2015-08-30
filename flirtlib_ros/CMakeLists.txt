@@ -64,7 +64,7 @@ catkin_package(
     warehouse_ros
   DEPENDS
     TinyXML
-    )
+    FLIRT)
 
 add_library(${PROJECT_NAME}
     src/conversions.cpp
