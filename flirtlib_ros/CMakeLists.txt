@@ -18,17 +18,18 @@ find_package(catkin REQUIRED COMPONENTS
    cmake_modules
    )
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 find_package(Boost REQUIRED COMPONENTS program_options)
 find_package(TinyXML REQUIRED)
+find_package(FLIRT REQUIRED)
 
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${TinyXML_INCLUDE_DIRS}
-    /usr/local/include/flirtlib)
-
-link_directories(/usr/local/lib/flirtlib)
+    ${FLIRT_INCLUDE_DIRS})
 
 add_message_files(
   DIRECTORY msg
@@ -63,16 +64,16 @@ catkin_package(
     warehouse_ros
   DEPENDS
     TinyXML
-    )
+    FLIRT)
 
 add_library(${PROJECT_NAME}
     src/conversions.cpp
     src/common.cpp
     src/flirtlib.cpp
     src/localization_monitor.cpp)
-  target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES} 
-   feature geometry sensors sensorstream utils )
- add_dependencies( ${PROJECT_NAME} ${PROJECT_NAME}_gencpp)
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES}
+  ${FLIRT_LIBRARIES})
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencpp)
 
 add_executable(flirtlib_ros_test src/flirtlib_ros_test.cpp)
 target_link_libraries(flirtlib_ros_test ${PROJECT_NAME} ${catkin_LIBRARIES})
