@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>flirtlib_ros</name>
-  <version>0.0.0</version>
+  <version>1.0.0</version>
   <description>
     ROS wrapper for the FLIRTlib 3rd party library.
   </description>
