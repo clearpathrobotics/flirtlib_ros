@@ -46,7 +46,7 @@
   <run_depend>interactive_markers</run_depend>
   <run_depend>warehouse_ros</run_depend>
   <run_depend>flirtlib</run_depend>
-  <run_depend>tinyxml</run_depend>
+  <run_depend>navigation_stage</run_depend>
 
   <run_depend>boost</run_depend>
   <run_depend>tinyxml</run_depend>
