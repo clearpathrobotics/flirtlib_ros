@@ -1,7 +1,7 @@
 <!--
   To run:
   - launch this file
-  - rosrun rviz rviz -d `rospack find flirtlib_ros`/config/flirtlib.vcg
+  - rosrun rviz rviz -d `rospack find flirtlib_ros`/config/flirtlib.rviz
 
   This generates a scan map from a map by simulating scans.
   Once this is done, click on 'interact' in rviz, then move the purple
