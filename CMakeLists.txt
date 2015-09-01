@@ -18,8 +18,6 @@ find_package(catkin REQUIRED COMPONENTS
    cmake_modules
    )
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
 find_package(Boost REQUIRED COMPONENTS program_options)
 find_package(TinyXML REQUIRED)
 find_package(FLIRT REQUIRED)
