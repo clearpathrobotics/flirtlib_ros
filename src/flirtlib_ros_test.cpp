@@ -145,7 +145,7 @@ SimpleMinMaxPeakFinder* createPeakFinder ()
 }
 
 Detector* createDetector (SimpleMinMaxPeakFinder* peak_finder,
-    const std::string& detector_type = "normal_edge")
+    const std::string& detector_type = "curvature")
 {
   if (detector_type == "curvature")
   {
@@ -160,7 +160,7 @@ Detector* createDetector (SimpleMinMaxPeakFinder* peak_finder,
 
     return det;
   }
-  else // if (detector_type == "normal_edge")
+  else if (detector_type == "normal_edge")
   {
     const double scale = 5.0;
     const double base_sigma = 1.6;
