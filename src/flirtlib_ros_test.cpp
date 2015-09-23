@@ -145,7 +145,7 @@ SimpleMinMaxPeakFinder* createPeakFinder ()
 }
 
 Detector* createDetector (SimpleMinMaxPeakFinder* peak_finder,
-    const std::string& detector_type = "nomal_edge")
+    const std::string& detector_type = "normal_edge")
 {
   if (detector_type == "curvature")
   {
