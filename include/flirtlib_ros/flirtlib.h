@@ -76,10 +76,10 @@ public:
   /// Extracts the features and their descriptors
   InterestPointVec extractFeatures (sensor_msgs::LaserScan::ConstPtr scan) const;
 
-  /// Extracts points from a scan and transforms them to a different frame
+  /// Extracts the features and their descriptors and transforms them to a different frame
   InterestPointVec extractFeatures (const sensor_msgs::LaserScan& scan, const tf::StampedTransform& transform) const;
 
-  /// Extracts the features from multiple scans
+  /// Extracts the features and their descriptors multiple scans and transforms them to a different frame
   InterestPointVec extractFeatures(const std::vector<sensor_msgs::LaserScan>& scans, const std::vector<tf::StampedTransform>& transforms) const;
 
   /// Returns the ransac matcher, should be replaced by a generic matching interface
