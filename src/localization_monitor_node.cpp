@@ -388,7 +388,7 @@ void Node::mapCB (const nm::OccupancyGrid& g)
     {
       Correspondences matches;
       OrientedPoint2D trans;
-      features_.ransac_->matchSets(ref_scan.raw_pts, pts, trans, matches);
+      features_.matcher()->matchSets(ref_scan.raw_pts, pts, trans, matches);
       const unsigned num_matches = matches.size();
       if (num_matches > min_num_matches_) 
       {
