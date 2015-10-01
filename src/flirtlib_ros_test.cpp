@@ -90,8 +90,8 @@ double averageDistance (const Correspondences& corresp,
 
   BOOST_FOREACH (const Correspondence& c, corresp) 
   {
-    const btVector3 pt0(c.first->getPosition().x, c.first->getPosition().y, 0.0);
-    const btVector3 pt1(c.second->getPosition().x, c.second->getPosition().y, 0.0);
+    const tf::Vector3 pt0(c.first->getPosition().x, c.first->getPosition().y, 0.0);
+    const tf::Vector3 pt1(c.second->getPosition().x, c.second->getPosition().y, 0.0);
     sum += (pose0*pt0).distance(pose1*pt1);
   }
   return sum/n;
@@ -144,16 +144,36 @@ SimpleMinMaxPeakFinder* createPeakFinder ()
   return new SimpleMinMaxPeakFinder(0.34, 0.001);
 }
 
-Detector* createDetector (SimpleMinMaxPeakFinder* peak_finder)
+Detector* createDetector (SimpleMinMaxPeakFinder* peak_finder,
+    const std::string& detector_type = "nomal_edge")
 {
-  const double scale = 5.0;
-  const double dmst = 2.0;
-  const double base_sigma = 0.2;
-  const double sigma_step = 1.4;
-  CurvatureDetector* det = new CurvatureDetector(peak_finder, scale, base_sigma,
-                                                 sigma_step, dmst);
-  det->setUseMaxRange(false);
-  return det;
+  if (detector_type == "curvature")
+  {
+    const double scale = 5.0;
+    const double dmst = 2.0;
+    const double base_sigma = 0.2;
+    const double sigma_step = 1.4;
+    CurvatureDetector* det = new CurvatureDetector(peak_finder, scale,
+                                                   base_sigma, sigma_step,
+                                                   dmst);
+    det->setUseMaxRange(false);
+
+    return det;
+  }
+  else // if (detector_type == "normal_edge")
+  {
+    const double scale = 5.0;
+    const double base_sigma = 1.6;
+    const double sigma_step = 1.4;
+    const int window = 3;
+    NormalEdgeDetector* det = new NormalEdgeDetector(peak_finder, scale,
+                                                     base_sigma, sigma_step,
+                                                     window);
+
+    return det;
+  }
+
+  return NULL;
 }
 
 DescriptorGenerator* createDescriptor (HistogramDistance<double>* dist)

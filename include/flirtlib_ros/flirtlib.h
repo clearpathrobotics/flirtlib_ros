@@ -57,6 +57,7 @@
 #include <flirtlib/utils/SimpleMinMaxPeakFinder.h>
 #include <flirtlib/utils/HistogramDistances.h>
 #include <sensor_msgs/LaserScan.h>
+#include <tf/tf.h>
 #include <ros/ros.h>
 
 namespace flirtlib_ros
@@ -64,20 +65,52 @@ namespace flirtlib_ros
 
 typedef std::vector<InterestPoint*> InterestPointVec;
 
-struct FlirtlibFeatures
+class FlirtlibFeatures
 {
+public:
   /// Initialize Flirtlib objects based on ros parameters.  Specifying the
   /// node handle argument allows selecting the ros namespace in which the
   /// parameters will be searched for.
   FlirtlibFeatures (ros::NodeHandle nh = ros::NodeHandle("~"));
-  
+
+  /// Extracts the features and their descriptors
+  InterestPointVec extractFeatures (sensor_msgs::LaserScan::ConstPtr scan) const;
+
+  /// Extracts the features and their descriptors and transforms them to a different frame
+  InterestPointVec extractFeatures (const sensor_msgs::LaserScan& scan, const tf::StampedTransform& transform) const;
+
+  /// Extracts the features and their descriptors multiple scans and transforms them to a different frame
+  InterestPointVec extractFeatures(const std::vector<sensor_msgs::LaserScan>& scans, const std::vector<tf::StampedTransform>& transforms) const;
+
+  /// Returns the ransac matcher, should be replaced by a generic matching interface
+  /// that supports different matching
+  boost::shared_ptr<RansacFeatureSetMatcher> matcher()
+  {
+    return ransac_;
+  }
+
+ private:
+
+  ros::NodeHandle nh_;
+
+  std::string detector_type_;
+  std::string descriptor_type_;
+  std::string matcher_type_;
+  double detector_scale_;
+  double detector_minimum_spanning_trees_num_;
+  double detector_base_sigma_;
+  double detector_sigma_step_;
+  int detector_window_;
+  double descriptor_min_rho_;
+  double descriptor_max_rho_;
+  double descriptor_bin_rho_;
+  double descriptor_bin_phi_;
+
   boost::shared_ptr<SimpleMinMaxPeakFinder> peak_finder_;
   boost::shared_ptr<HistogramDistance<double> > histogram_dist_;
   boost::shared_ptr<Detector> detector_;
   boost::shared_ptr<DescriptorGenerator> descriptor_;
   boost::shared_ptr<RansacFeatureSetMatcher> ransac_;
-  
-  InterestPointVec extractFeatures (sensor_msgs::LaserScan::ConstPtr scan) const;
 };
 
 } // namespace

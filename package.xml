@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>flirtlib_ros</name>
-  <version>0.0.0</version>
+  <version>1.0.0</version>
   <description>
     ROS wrapper for the FLIRTlib 3rd party library.
   </description>
@@ -25,10 +25,12 @@
   <build_depend>occupancy_grid_utils</build_depend>
   <build_depend>interactive_markers</build_depend>
   <build_depend>warehouse_ros</build_depend>
+  <build_depend>cmake_modules</build_depend>
   <build_depend>flirtlib</build_depend>
-
   <build_depend>boost</build_depend>
   <build_depend>tinyxml</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
 
   <run_depend>message_runtime</run_depend>
   <run_depend>roscpp</run_depend>
@@ -36,13 +38,15 @@
   <run_depend>sensor_msgs</run_depend>
   <run_depend>move_base_msgs</run_depend>
   <run_depend>actionlib_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
   <run_depend>actionlib</run_depend>
   <run_depend>tf</run_depend>
   <run_depend>occupancy_grid_utils</run_depend>
   <run_depend>interactive_markers</run_depend>
   <run_depend>warehouse_ros</run_depend>
   <run_depend>flirtlib</run_depend>
-
+  <run_depend>navigation_stage</run_depend>
   <run_depend>boost</run_depend>
   <run_depend>tinyxml</run_depend>
 </package>

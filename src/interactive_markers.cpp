@@ -44,6 +44,7 @@
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 #include <tf/transform_broadcaster.h>
+#include <tf/transform_datatypes.h>
 
 namespace flirtlib_ros
 {
@@ -162,8 +163,8 @@ tf::StampedTransform toTf (const gm::Pose& p, const string& frame)
   tf::Transform trans;
   const gm::Point pos=p.position;
   const gm::Quaternion rot=p.orientation;
-  trans.setOrigin(btVector3(pos.x, pos.y, pos.z));
-  trans.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
+  trans.setOrigin(tf::Vector3(pos.x, pos.y, pos.z));
+  trans.setRotation(tf::Quaternion(rot.x, rot.y, rot.z, rot.w));
   return tf::StampedTransform(trans, ros::Time::now(), "/map", frame);
 }
 
