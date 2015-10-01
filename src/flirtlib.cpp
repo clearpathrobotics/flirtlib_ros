@@ -44,11 +44,6 @@
 namespace flirtlib_ros
 {
 
-using std::string;
-namespace sm=sensor_msgs;
-
-
-
 FlirtlibFeatures::FlirtlibFeatures (ros::NodeHandle nh)
   : nh_(nh)
   , detector_type_("curvature")
@@ -79,9 +74,6 @@ FlirtlibFeatures::FlirtlibFeatures (ros::NodeHandle nh)
 
   peak_finder_.reset(new SimpleMinMaxPeakFinder(0.34, 0.001));
   histogram_dist_.reset(new SymmetricChi2Distance<double>());
-
-  peak_finder_ = boost::shared_ptr<SimpleMinMaxPeakFinder>(new SimpleMinMaxPeakFinder(0.34, 0.001));
-  histogram_dist_ = boost::shared_ptr<HistogramDistance<double> >(new SymmetricChi2Distance<double>());
 
   // Detector
   if (detector_type_ == "curvature")
@@ -126,9 +118,8 @@ FlirtlibFeatures::FlirtlibFeatures (ros::NodeHandle nh)
   ransac_.reset(new RansacFeatureSetMatcher(0.0299, 0.95, 0.2, 0.1,0.0184, false));
 }
 
-// Extract flirtlib features
 InterestPointVec
-FlirtlibFeatures::extractFeatures (sm::LaserScan::ConstPtr scan) const
+FlirtlibFeatures::extractFeatures (sensor_msgs::LaserScan::ConstPtr scan) const
 {
   boost::shared_ptr<LaserReading> reading = fromRos(*scan);
   InterestPointVec pts;
@@ -138,9 +129,8 @@ FlirtlibFeatures::extractFeatures (sm::LaserScan::ConstPtr scan) const
   return pts;
 }
 
-// Extract flirtlib features
 InterestPointVec
-FlirtlibFeatures::extractFeatures (const sm::LaserScan& scan, const tf::StampedTransform& transform) const
+FlirtlibFeatures::extractFeatures (const sensor_msgs::LaserScan& scan, const tf::StampedTransform& transform) const
 {
   boost::shared_ptr<LaserReading> reading = fromRos(scan);
   InterestPointVec pts;
@@ -155,14 +145,13 @@ FlirtlibFeatures::extractFeatures (const sm::LaserScan& scan, const tf::StampedT
   return pts;
 }
 
-
-// Extract from multiple scans
 InterestPointVec
 FlirtlibFeatures::extractFeatures (const std::vector<sensor_msgs::LaserScan>& scans, const std::vector<tf::StampedTransform>& transforms) const
 {
   InterestPointVec pts;
   std::vector<sensor_msgs::LaserScan>::const_iterator scans_iter = scans.begin();
   std::vector<tf::StampedTransform>::const_iterator tf_iter = transforms.begin();
+
   for(; scans_iter != scans.end(); ++scans_iter, ++tf_iter)
   {
     InterestPointVec v = extractFeatures(*scans_iter, *tf_iter);
@@ -170,7 +159,6 @@ FlirtlibFeatures::extractFeatures (const std::vector<sensor_msgs::LaserScan>& sc
   }
 
   return pts;
-
 }
 
 

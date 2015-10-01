@@ -83,6 +83,7 @@ public:
   InterestPointVec extractFeatures(const std::vector<sensor_msgs::LaserScan>& scans, const std::vector<tf::StampedTransform>& transforms) const;
 
   /// Returns the ransac matcher, should be replaced by a generic matching interface
+  /// that supports different matching
   boost::shared_ptr<RansacFeatureSetMatcher> matcher()
   {
     return ransac_;
@@ -110,7 +111,6 @@ public:
   boost::shared_ptr<Detector> detector_;
   boost::shared_ptr<DescriptorGenerator> descriptor_;
   boost::shared_ptr<RansacFeatureSetMatcher> ransac_;
-  
 };
 
 } // namespace
