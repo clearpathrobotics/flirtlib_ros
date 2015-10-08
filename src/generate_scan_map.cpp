@@ -170,11 +170,12 @@ gm::Pose Node::getPoseAt (const ros::Time& t) const
 RefScanRos Node::extractFeatures (sm::LaserScan::ConstPtr scan,
                                   const gm::Pose& pose)
 {
-  boost::shared_ptr<LaserReading> reading = fromRos(*scan);
-  InterestPointVec pts;
-  features_.detector_->detect(*reading, pts);
+ // boost::shared_ptr<LaserReading> reading = fromRos(*scan);
+  InterestPointVec pts = features_.extractFeatures(scan);
+  /*features_.detector_->detect(*reading, pts);
   BOOST_FOREACH (InterestPoint* p, pts) 
-    p->setDescriptor(features_.descriptor_->describe(*p, *reading));
+    p->setDescriptor(features_.descriptor_->describe(*p, *reading));*/
+
   marker_pub_.publish(interestPointMarkers(pts, pose));
   const RefScan ref(scan, pose, pts);
   return toRos(ref);
